@@ -1,16 +1,14 @@
 const mqtt = require('mqtt')
-const client  = mqtt.connect('mqtt://test.mosquitto.org')
+const client  = mqtt.connect('mqtt://broker.hivemq.com')
 
 client.on('connect', () => {
   client.subscribe('presence', (err) => {
     if (!err) {
-      client.publish('presence', 'Hello mqtt')
+      let i = 0;
+      setInterval(() => {
+        i += 1;
+        client.publish('presence/connected', `Hello mqtt ${i}`);
+      }, 1000)
     }
   })
-})
-
-client.on('message', (topic, message) => {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
 })
